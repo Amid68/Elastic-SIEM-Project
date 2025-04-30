@@ -1,0 +1,48 @@
+{
+  "objects": [
+    {
+      "id": "security-overview-dashboard",
+      "type": "dashboard",
+      "attributes": {
+        "title": "Security Overview",
+        "description": "Provides a comprehensive overview of security events across the environment",
+        "panelsJSON": "[{\"embeddableConfig\":{\"title\":\"Authentication Failures Over Time\"},\"gridData\":{\"h\":15,\"i\":\"1\",\"w\":24,\"x\":0,\"y\":0},\"panelIndex\":\"1\",\"title\":\"Authentication Failures Over Time\",\"type\":\"visualization\",\"version\":\"7.6.0\"},{\"embeddableConfig\":{\"title\":\"Network Traffic by Protocol\"},\"gridData\":{\"h\":15,\"i\":\"2\",\"w\":24,\"x\":24,\"y\":0},\"panelIndex\":\"2\",\"title\":\"Network Traffic by Protocol\",\"type\":\"visualization\",\"version\":\"7.6.0\"},{\"embeddableConfig\":{\"title\":\"Top Source IP Addresses\"},\"gridData\":{\"h\":15,\"i\":\"3\",\"w\":24,\"x\":0,\"y\":15},\"panelIndex\":\"3\",\"title\":\"Top Source IP Addresses\",\"type\":\"visualization\",\"version\":\"7.6.0\"},{\"embeddableConfig\":{\"title\":\"Geographic Map of Source IPs\"},\"gridData\":{\"h\":15,\"i\":\"4\",\"w\":24,\"x\":24,\"y\":15},\"panelIndex\":\"4\",\"title\":\"Geographic Map of Source IPs\",\"type\":\"visualization\",\"version\":\"7.6.0\"}]",
+        "optionsJSON": "{\"hidePanelTitles\":false,\"useMargins\":true}",
+        "version": 1,
+        "timeRestore": true,
+        "timeTo": "now",
+        "timeFrom": "now-24h",
+        "refreshInterval": {
+          "pause": false,
+          "value": 300000
+        },
+        "kibanaSavedObjectMeta": {
+          "searchSourceJSON": "{\"query\":{\"language\":\"kuery\",\"query\":\"\"},\"filter\":[]}"
+        }
+      },
+      "references": [
+        {
+          "name": "1",
+          "type": "visualization",
+          "id": "auth-failures"
+        },
+        {
+          "name": "2",
+          "type": "visualization",
+          "id": "network-traffic"
+        },
+        {
+          "name": "3",
+          "type": "visualization",
+          "id": "top-source-ips"
+        },
+        {
+          "name": "4",
+          "type": "visualization",
+          "id": "geo-map"
+        }
+      ]
+    }
+  ]
+}
+
