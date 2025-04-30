@@ -1,0 +1,66 @@
+auditbeat.modules:
+- module: auditd
+  audit_rule_files: [ "${path.config}/audit.rules.d/*.conf" ]
+  audit_rules: |
+    # Log all commands executed by root
+    -a always,exit -F arch=b64 -F euid=0 -S execve -k rootcmd
+    -a always,exit -F arch=b32 -F euid=0 -S execve -k rootcmd
+
+    # Log all file access
+    -a always,exit -F arch=b64 -S open,openat,creat -F exit=-EACCES -k file_access
+    -a always,exit -F arch=b32 -S open,openat,creat -F exit=-EACCES -k file_access
+
+    # Log changes to users and groups
+    -w /etc/passwd -p wa -k identity
+    -w /etc/group -p wa -k identity
+    -w /etc/shadow -p wa -k identity
+    -w /etc/sudoers -p wa -k identity
+
+    # Log system startup/shutdown
+    -w /sbin/shutdown -p x -k system_shutdown
+    -w /sbin/reboot -p x -k system_reboot
+
+- module: file_integrity
+  paths:
+  - /bin
+  - /usr/bin
+  - /sbin
+  - /usr/sbin
+  - /etc
+
+- module: system
+  datasets:
+    - host
+    - login
+    - package
+    - process
+    - socket
+    - user
+  period: 10s
+  state.period: 12h
+  user.detect_password_changes: true
+
+processors:
+  - add_host_metadata: ~
+  - add_cloud_metadata: ~
+  - add_docker_metadata: ~
+
+output.logstash:
+  hosts: ["logstash:5044"]
+  ssl.enabled: false
+
+# Alternative Elasticsearch output (commented out)
+#output.elasticsearch:
+#  hosts: ["elasticsearch:9200"]
+#  username: "elastic"
+#  password: "${ELASTIC_PASSWORD}"
+#  ssl.enabled: false
+
+logging.level: info
+logging.to_files: true
+logging.files:
+  path: /var/log/auditbeat
+  name: auditbeat
+  keepfiles: 7
+  permissions: 0644
+

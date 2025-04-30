@@ -1,0 +1,31 @@
+cluster.name: ${CLUSTER_NAME}
+node.name: elasticsearch
+network.host: 0.0.0.0
+http.port: 9200
+
+# Security settings
+xpack.security.enabled: true
+xpack.security.authc.api_key.enabled: true
+
+# Discovery settings for single-node deployment
+discovery.type: single-node
+
+# Memory settings
+bootstrap.memory_lock: true
+
+# Path settings
+path.data: /usr/share/elasticsearch/data
+path.logs: /usr/share/elasticsearch/logs
+
+# TLS/SSL settings (commented out for initial setup)
+#xpack.security.http.ssl.enabled: true
+#xpack.security.http.ssl.key: certs/elasticsearch.key
+#xpack.security.http.ssl.certificate: certs/elasticsearch.crt
+#xpack.security.http.ssl.certificate_authorities: certs/ca.crt
+
+# Cross-cluster settings
+#cluster.remote.connect: false
+
+# Monitoring settings
+xpack.monitoring.collection.enabled: true
+

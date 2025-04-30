@@ -1,0 +1,27 @@
+server.name: kibana
+server.host: "0.0.0.0"
+server.port: 5601
+
+# Elasticsearch connection settings
+elasticsearch.hosts: ["http://elasticsearch:9200"]
+elasticsearch.username: "elastic"
+elasticsearch.password: "${ELASTIC_PASSWORD}"
+
+# Kibana encryption key for session storage
+xpack.encryptedSavedObjects.encryptionKey: "${KIBANA_ENCRYPTION_KEY}"
+
+# Security settings
+xpack.security.enabled: true
+
+# SIEM specific settings
+xpack.securitySolution.enabled: true
+xpack.securitySolution.enableExperimental: ["alertingEventExceptions"]
+
+# Monitoring settings
+monitoring.ui.container.elasticsearch.enabled: true
+
+# Telemetry settings (can be disabled in production)
+telemetry.enabled: false
+
+# Logging settings
+logging.root.level: info

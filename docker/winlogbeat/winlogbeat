@@ -1,0 +1,43 @@
+winlogbeat.event_logs:
+  - name: Application
+    ignore_older: 72h
+  - name: System
+    ignore_older: 72h
+  - name: Security
+    ignore_older: 72h
+  - name: Microsoft-Windows-Sysmon/Operational
+    ignore_older: 72h
+  - name: Microsoft-Windows-PowerShell/Operational
+    ignore_older: 72h
+  - name: Windows PowerShell
+    ignore_older: 72h
+  - name: Microsoft-Windows-WMI-Activity/Operational
+    ignore_older: 72h
+
+processors:
+  - add_host_metadata: ~
+  - add_cloud_metadata: ~
+
+output.logstash:
+  hosts: ["logstash:5044"]
+  ssl.enabled: false
+
+# Alternative Elasticsearch output (commented out)
+#output.elasticsearch:
+#  hosts: ["elasticsearch:9200"]
+#  username: "elastic"
+#  password: "${ELASTIC_PASSWORD}"
+#  ssl.enabled: false
+
+logging.level: info
+logging.to_files: true
+logging.files:
+  path: C:\ProgramData\winlogbeat\logs
+  name: winlogbeat
+  keepfiles: 7
+  permissions: 0644
+
+# Note: This configuration is for Windows team members
+# It should be installed on Windows systems using the Windows installer
+# and not run in Docker
+

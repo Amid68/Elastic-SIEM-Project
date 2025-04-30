@@ -1,0 +1,41 @@
+filebeat.inputs:
+- type: container
+  enabled: true
+  paths:
+    - /var/lib/docker/containers/*/*.log
+
+- type: log
+  enabled: true
+  paths:
+    - /var/log/*.log
+    - /var/log/messages
+    - /var/log/syslog
+  exclude_files: ['\.gz$']
+  fields:
+    source_type: system_logs
+
+processors:
+  - add_host_metadata: ~
+  - add_cloud_metadata: ~
+  - add_docker_metadata: ~
+  - add_kubernetes_metadata: ~
+
+output.logstash:
+  hosts: ["logstash:5044"]
+  ssl.enabled: false
+
+# Alternative Elasticsearch output (commented out)
+#output.elasticsearch:
+#  hosts: ["elasticsearch:9200"]
+#  username: "elastic"
+#  password: "${ELASTIC_PASSWORD}"
+#  ssl.enabled: false
+
+logging.level: info
+logging.to_files: true
+logging.files:
+  path: /var/log/filebeat
+  name: filebeat
+  keepfiles: 7
+  permissions: 0644
+
