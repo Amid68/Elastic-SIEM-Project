@@ -6,9 +6,6 @@ server.port: 5601
 elasticsearch.hosts: ["http://elasticsearch:9200"]
 elasticsearch.username: "elastic"
 
-# Security settings
-xpack.security.enabled: true
-
 # SIEM specific settings
 xpack.securitySolution.enabled: true
 xpack.securitySolution.enableExperimental: ["alertingEventExceptions"]
