@@ -19,6 +19,7 @@ services:
     volumes:
       - elasticsearch-data:/usr/share/elasticsearch/data
       - ./elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - ./elasticsearch/certs:/usr/share/elasticsearch/config/certs
     ports:
       - "9200:9200"
     networks:
@@ -57,6 +58,7 @@ services:
       - xpack.monitoring.elasticsearch.hosts=http://elasticsearch:9200
       - xpack.monitoring.elasticsearch.username=elastic
       - xpack.monitoring.elasticsearch.password=${ELASTIC_PASSWORD}
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
     volumes:
       - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
       - ./logstash/pipeline:/usr/share/logstash/pipeline

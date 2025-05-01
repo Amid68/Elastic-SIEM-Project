@@ -29,3 +29,9 @@ path.logs: /usr/share/elasticsearch/logs
 # Monitoring settings
 xpack.monitoring.collection.enabled: true
 
+# Enable TLS/SSL for transport layer
+xpack.security.transport.ssl.enabled: true
+xpack.security.transport.ssl.verification_mode: certificate
+xpack.security.transport.ssl.key: /usr/share/elasticsearch/config/certs/node.key
+xpack.security.transport.ssl.certificate: /usr/share/elasticsearch/config/certs/node.crt
+xpack.security.transport.ssl.certificate_authorities: ["/usr/share/elasticsearch/config/certs/ca.crt"]
