@@ -4,7 +4,7 @@ server.port: 5601
 
 # Elasticsearch connection settings
 elasticsearch.hosts: ["http://elasticsearch:9200"]
-elasticsearch.username: "elastic"
+elasticsearch.username: "kibana_system"
 
 # SIEM specific settings
 xpack.securitySolution.enabled: true

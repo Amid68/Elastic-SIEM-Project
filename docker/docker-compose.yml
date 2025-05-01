@@ -36,8 +36,8 @@ services:
     container_name: kibana
     environment:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
-      - ELASTICSEARCH_USERNAME=elastic
-      - ELASTICSEARCH_PASSWORD=${ELASTIC_PASSWORD}
+      - ELASTICSEARCH_USERNAME=kibana_system
+      - ELASTICSEARCH_PASSWORD=kibana123
     volumes:
       - ./kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
     ports:
@@ -103,26 +103,6 @@ services:
         condition: service_healthy
     platform: linux/arm64  # Specific for M1 Mac
     command: packetbeat -e -strict.perms=false
-
-  # Auditbeat
-  auditbeat:
-    image: docker.elastic.co/beats/auditbeat:8.12.2
-    container_name: auditbeat
-    user: root  # Needed for audit framework
-    cap_add:
-      - AUDIT_CONTROL
-      - AUDIT_READ
-    volumes:
-      - ./auditbeat/auditbeat.yml:/usr/share/auditbeat/auditbeat.yml:ro
-      - /var/log:/var/log:ro
-      - /var/lib/docker/containers:/var/lib/docker/containers:ro
-    networks:
-      - elastic-net
-    depends_on:
-      elasticsearch:
-        condition: service_healthy
-    platform: linux/arm64  # Specific for M1 Mac
-    command: auditbeat -e -strict.perms=false
 
 networks:
   elastic-net:

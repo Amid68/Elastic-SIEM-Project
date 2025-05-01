@@ -1,8 +1,0 @@
-services:
-  elasticsearch:
-    healthcheck:
-      test: ["CMD", "curl", "-u", "elastic:elastic123", "-s", "http://localhost:9200/_cluster/health"]
-      interval: 10s
-      timeout: 10s
-      retries: 3
-      start_period: 30s
