@@ -5,10 +5,6 @@ server.port: 5601
 # Elasticsearch connection settings
 elasticsearch.hosts: ["http://elasticsearch:9200"]
 elasticsearch.username: "elastic"
-elasticsearch.password: "${ELASTIC_PASSWORD}"
-
-# Kibana encryption key for session storage
-xpack.encryptedSavedObjects.encryptionKey: "${KIBANA_ENCRYPTION_KEY}"
 
 # Security settings
 xpack.security.enabled: true
