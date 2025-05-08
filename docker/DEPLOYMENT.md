@@ -92,6 +92,8 @@ cd Elastic-SIEM-Project
 
 3. If no indices appear immediately, wait a few minutes as data collection may take time to begin.
 
+![Index Management](./screenshots/index_management.png)
+
 ## Step 6: Stopping the Elastic Stack
 
 To stop the Elastic Stack when not in use:

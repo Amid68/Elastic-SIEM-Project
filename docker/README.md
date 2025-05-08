@@ -10,8 +10,6 @@ This directory contains the Docker configuration files needed to deploy the Elas
 - `logstash/`: Configuration files for Logstash and pipeline configurations
 - `filebeat/`: Configuration files for Filebeat
 - `packetbeat/`: Configuration files for Packetbeat
-- `auditbeat/`: Configuration files for Auditbeat
-- `winlogbeat/`: Configuration files for Winlogbeat (for Windows team members)
 - `.env`: Environment variables for Docker Compose
 
 ## Deployment Instructions
