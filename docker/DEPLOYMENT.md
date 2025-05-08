@@ -31,7 +31,11 @@ cd Elastic-SIEM-Project
 
 3. At minimum, change the following variables:
    - `ELASTIC_PASSWORD`: Set a strong password for the Elasticsearch admin user
-   - `KIBANA_ENCRYPTION_KEY`: Set a random 32+ character string for Kibana encryption
+   - `KIBANA_ENCRYPTION_KEY`: Set a random 32+ character string for Kibana encryption. For this you can use this command:
+     
+     ```
+     openssl rand -base64 32
+     ```
    - Adjust memory settings if needed based on your system resources
 
 ## Step 3: Deploy the Elastic Stack
@@ -76,71 +80,19 @@ cd Elastic-SIEM-Project
    - Username: `elastic`
    - Password: The value you set for `ELASTIC_PASSWORD` in the `.env` file
 
-## Step 5: Configure Kibana for SIEM
+3. Verify you can access the Security section by clicking on the hamburger menu (☰) in the top-left corner and selecting "Security" from the sidebar.
 
-1. After logging in to Kibana, click on the hamburger menu (☰) in the top-left corner.
-
-2. Navigate to "Security" in the left sidebar.
-
-3. If this is your first time, you'll be prompted to add sample data. You can choose to add it for testing purposes.
-
-4. Configure detection rules:
-   - Go to "Security" > "Detections" > "Manage detection rules"
-   - Enable the rules relevant to your monitoring needs
-   - Create custom rules as needed
-
-5. Set up dashboards:
-   - Go to "Security" > "Overview" to see the main SIEM dashboard
-   - Explore other dashboards under "Security" > "Explore"
-
-## Step 6: Configure Beats for Data Collection
-
-The Beats agents are already configured with basic settings, but you may need to customize them for your specific environment:
-
-1. Filebeat:
-   - Edit `filebeat/filebeat.yml` to add or modify log sources
-   - Restart Filebeat after changes: `docker-compose restart filebeat`
-
-2. Packetbeat:
-   - Edit `packetbeat/packetbeat.yml` to modify network monitoring settings
-   - Restart Packetbeat after changes: `docker-compose restart packetbeat`
-
-## Step 7: Configure Windows Agents (for Windows Team Members)
-
-For Windows team members, Winlogbeat needs to be installed directly on Windows systems:
-
-1. Download Winlogbeat from the [Elastic website](https://www.elastic.co/downloads/beats/winlogbeat)
-
-2. Extract the downloaded package to `C:\Program Files\Winlogbeat`
-
-3. Copy the `winlogbeat/winlogbeat.yml` configuration file to the installation directory
-
-4. Edit the configuration file to point to your Elasticsearch or Logstash instance:
-   ```yaml
-   output.logstash:
-     hosts: ["your-mac-ip-address:5044"]
-   ```
-
-5. Install and start the Winlogbeat service:
-   ```powershell
-   # Run PowerShell as Administrator
-   cd 'C:\Program Files\Winlogbeat'
-   .\install-service-winlogbeat.ps1
-   Start-Service winlogbeat
-   ```
-
-## Step 8: Verify Data Collection
+## Step 5: Verify Data Collection
 
 1. In Kibana, navigate to "Management" > "Stack Management" > "Index Management"
 
 2. Verify that indices are being created for each Beat:
    - `filebeat-*`
    - `packetbeat-*`
-   - `winlogbeat-*` (if Windows agents are configured)
 
-3. Check "Discover" in Kibana to see if data is flowing in
+3. If no indices appear immediately, wait a few minutes as data collection may take time to begin.
 
-## Step 9: Stopping the Elastic Stack
+## Step 6: Stopping the Elastic Stack
 
 To stop the Elastic Stack when not in use:
 
