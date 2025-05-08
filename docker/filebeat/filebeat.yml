@@ -14,6 +14,15 @@ filebeat.inputs:
   fields:
     source_type: system_logs
 
+- type: log
+  enabled: true
+  paths:
+    - /usr/share/filebeat/network_logs/*.json
+  json.keys_under_root: true
+  fields:
+    source_type: network_traffic
+  fields_under_root: true
+
 processors:
   - add_host_metadata: ~
   - add_cloud_metadata: ~

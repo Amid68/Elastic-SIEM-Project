@@ -29,7 +29,7 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
-    platform: linux/arm64  # Specific for M1 Mac
+    # Removed platform: linux/arm64
 
   # Kibana
   kibana:
@@ -48,7 +48,7 @@ services:
     depends_on:
       elasticsearch:
         condition: service_healthy
-    platform: linux/arm64  # Specific for M1 Mac
+    # Removed platform: linux/arm64
 
   # Logstash
   logstash:
@@ -70,7 +70,7 @@ services:
     depends_on:
       elasticsearch:
         condition: service_healthy
-    platform: linux/arm64  # Specific for M1 Mac
+    # Removed platform: linux/arm64
 
   # Filebeat
   filebeat:
@@ -81,35 +81,17 @@ services:
       - ./filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
       - /var/log:/var/log:ro
+      - ./network_logs:/usr/share/filebeat/network_logs:ro  # Added for network traffic logs
     networks:
       - elastic-net
     depends_on:
       elasticsearch:
         condition: service_healthy
-    platform: linux/arm64  # Specific for M1 Mac
+    # Removed platform: linux/arm64
     command: filebeat -e -strict.perms=false
-
-  # Packetbeat
-  packetbeat:
-    image: docker.elastic.co/beats/packetbeat:8.12.2
-    container_name: packetbeat
-    user: root  # Needed to capture network traffic
-    cap_add:
-      - NET_ADMIN
-      - NET_RAW
-    volumes:
-      - ./packetbeat/packetbeat.yml:/usr/share/packetbeat/packetbeat.yml:ro
-    network_mode: host  # Required to capture host network traffic
-    depends_on:
-      elasticsearch:
-        condition: service_healthy
-    platform: linux/arm64  # Specific for M1 Mac
-    command: packetbeat -e -strict.perms=false
 
 networks:
   elastic-net:
     driver: bridge
-
 volumes:
   elasticsearch-data:
-
