@@ -109,42 +109,17 @@ The Beats agents are already configured with basic settings, but you may need to
    - Edit `packetbeat/packetbeat.yml` to modify network monitoring settings
    - Restart Packetbeat after changes: `docker-compose restart packetbeat`
 
-## Step 7: Configure Windows Agents (for Windows Team Members)
-
-For Windows team members, Winlogbeat needs to be installed directly on Windows systems:
-
-1. Download Winlogbeat from the [Elastic website](https://www.elastic.co/downloads/beats/winlogbeat)
-
-2. Extract the downloaded package to `C:\Program Files\Winlogbeat`
-
-3. Copy the `winlogbeat/winlogbeat.yml` configuration file to the installation directory
-
-4. Edit the configuration file to point to your Elasticsearch or Logstash instance:
-   ```yaml
-   output.logstash:
-     hosts: ["your-mac-ip-address:5044"]
-   ```
-
-5. Install and start the Winlogbeat service:
-   ```powershell
-   # Run PowerShell as Administrator
-   cd 'C:\Program Files\Winlogbeat'
-   .\install-service-winlogbeat.ps1
-   Start-Service winlogbeat
-   ```
-
-## Step 8: Verify Data Collection
+## Step 7: Verify Data Collection
 
 1. In Kibana, navigate to "Management" > "Stack Management" > "Index Management"
 
 2. Verify that indices are being created for each Beat:
    - `filebeat-*`
    - `packetbeat-*`
-   - `winlogbeat-*` (if Windows agents are configured)
 
 3. Check "Discover" in Kibana to see if data is flowing in
 
-## Step 9: Stopping the Elastic Stack
+## Step 8: Stopping the Elastic Stack
 
 To stop the Elastic Stack when not in use:
 
