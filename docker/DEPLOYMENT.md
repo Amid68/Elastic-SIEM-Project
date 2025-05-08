@@ -31,7 +31,11 @@ cd Elastic-SIEM-Project
 
 3. At minimum, change the following variables:
    - `ELASTIC_PASSWORD`: Set a strong password for the Elasticsearch admin user
-   - `KIBANA_ENCRYPTION_KEY`: Set a random 32+ character string for Kibana encryption
+   - `KIBANA_ENCRYPTION_KEY`: Set a random 32+ character string for Kibana encryption. For this you can use this command:
+     
+     ```
+     openssl rand -base64 32
+     ```
    - Adjust memory settings if needed based on your system resources
 
 ## Step 3: Deploy the Elastic Stack
