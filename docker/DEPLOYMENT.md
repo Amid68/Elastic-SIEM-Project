@@ -36,27 +36,34 @@ cd Elastic-SIEM-Project
 
 ## Step 3: Deploy the Elastic Stack
 
-1. Start the Elastic Stack using Docker Compose:
+1. Start the Elasticsearch container:
    ```bash
-   docker-compose up -d elasticsearch kibana
+   docker-compose up -d elasticsearch
    ```
 
-2. Wait for Elasticsearch and Kibana to fully initialize (this may take a few minutes):
+2. Wait for Elasticsearch to fully initialize (this may take a few minutes):
    ```bash
-   docker-compose logs -f elasticsearch kibana
+   docker-compose logs -f elasticsearch
    ```
    
-   Wait until you see logs indicating that both services are running properly.
+   Wait until you see logs indicating that the service is running properly. Note that a YELLOW status is normal for a single-node cluster.
 
-3. Once Elasticsearch and Kibana are running, deploy Logstash:
+3. Once Elasticsearch is running, deploy Kibana:
    ```bash
-   docker-compose up -d logstash
+   docker-compose up -d --no-deps kibana
    ```
 
-4. Finally, deploy the Beats components:
+4. After Kibana is running, deploy Logstash:
    ```bash
-   docker-compose up -d filebeat packetbeat auditbeat
+   docker-compose up -d --no-deps logstash
    ```
+
+5. Finally, deploy the Beats components:
+   ```bash
+   docker-compose up -d --no-deps filebeat packetbeat
+   ```
+
+   Note: Using the `--no-deps` flag is a workaround for health check issues that may mark Elasticsearch as unhealthy despite it functioning correctly.
 
 ## Step 4: Access Kibana
 
@@ -98,10 +105,6 @@ The Beats agents are already configured with basic settings, but you may need to
    - Edit `packetbeat/packetbeat.yml` to modify network monitoring settings
    - Restart Packetbeat after changes: `docker-compose restart packetbeat`
 
-3. Auditbeat:
-   - Edit `auditbeat/auditbeat.yml` to modify system audit settings
-   - Restart Auditbeat after changes: `docker-compose restart auditbeat`
-
 ## Step 7: Configure Windows Agents (for Windows Team Members)
 
 For Windows team members, Winlogbeat needs to be installed directly on Windows systems:
@@ -133,7 +136,6 @@ For Windows team members, Winlogbeat needs to be installed directly on Windows s
 2. Verify that indices are being created for each Beat:
    - `filebeat-*`
    - `packetbeat-*`
-   - `auditbeat-*`
    - `winlogbeat-*` (if Windows agents are configured)
 
 3. Check "Discover" in Kibana to see if data is flowing in
@@ -182,7 +184,6 @@ docker-compose down -v
    ```bash
    docker-compose logs filebeat
    docker-compose logs packetbeat
-   docker-compose logs auditbeat
    ```
 
 3. Verify Logstash is processing data:
@@ -190,23 +191,10 @@ docker-compose down -v
    docker-compose logs logstash
    ```
 
-### Windows Agent Issues
+### Environment Variable Issues
 
-1. Check Winlogbeat service status:
-   ```powershell
-   Get-Service winlogbeat
-   ```
+If you see errors about undefined environment variables:
 
-2. Check Winlogbeat logs in `C:\ProgramData\winlogbeat\logs`
-
-3. Verify network connectivity to the Logstash instance
-
-## Next Steps
-
-After successful deployment, proceed to:
-
-1. Configure detection rules for your specific security monitoring needs
-2. Set up alerts and notifications
-3. Create custom dashboards for your security operations
-4. Implement the test scenarios as outlined in the project plan
-
+1. Check that your `.env` file contains all required variables
+2. Verify that the variables are properly referenced in your docker-compose.yml
+3. For Logstash specifically, ensure the `ELASTIC_PASSWORD` variable is explicitly defined in the environment section
