@@ -9,6 +9,7 @@ elasticsearch.username: "kibana_system"
 # SIEM specific settings
 xpack.securitySolution.enabled: true
 xpack.securitySolution.enableExperimental: ["alertingEventExceptions"]
+xpack.encryptedSavedObjects.encryptionKey: "7b+XR+nGQ75Izy2mXs7YmZBWds4MNCSBFDBKqPGQGDY="
 
 # Monitoring settings
 monitoring.ui.container.elasticsearch.enabled: true

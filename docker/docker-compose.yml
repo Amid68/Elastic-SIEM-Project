@@ -29,7 +29,7 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
-    # Removed platform: linux/arm64
+    platform: linux/arm64
 
   # Kibana
   kibana:
@@ -48,7 +48,7 @@ services:
     depends_on:
       elasticsearch:
         condition: service_healthy
-    # Removed platform: linux/arm64
+    platform: linux/arm64
 
   # Logstash
   logstash:
@@ -70,7 +70,7 @@ services:
     depends_on:
       elasticsearch:
         condition: service_healthy
-    # Removed platform: linux/arm64
+    platform: linux/arm64
 
   # Filebeat
   filebeat:
@@ -87,8 +87,40 @@ services:
     depends_on:
       elasticsearch:
         condition: service_healthy
-    # Removed platform: linux/arm64
+    platform: linux/arm64
     command: filebeat -e -strict.perms=false
+
+  # SSH Target (for brute-force simulation)
+  ssh-target:
+  image: linuxserver/openssh-server
+  container_name: ssh-target
+  environment:
+    - PUID=1000
+    - PGID=1000
+    - TZ=Etc/UTC
+    - USER_NAME=testuser
+    - PASSWORD_ACCESS=true
+    - USER_PASSWORD=testpassword
+    - LOG_STDOUT=true
+  ports:
+    - "2222:2222"
+  networks:
+    elastic-net: {} 
+  platform: linux/arm64
+  labels:
+    co.elastic.logs/module: "system"
+    co.elastic.logs/fileset: "auth"
+
+  # Hydra Attacker Container (uncomment when running the simulation)
+  hydra-attacker:
+    image: ubuntu
+    container_name: hydra-attacker
+    tty: true
+    stdin_open: true
+    command: bash -c "apt-get update && apt-get install -y hydra && sleep infinity"
+    networks:
+      - elastic-net
+    platform: linux/arm64
 
 networks:
   elastic-net:

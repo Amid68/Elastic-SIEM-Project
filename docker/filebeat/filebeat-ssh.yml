@@ -1,0 +1,17 @@
+filebeat.inputs:
+- type: container
+  enabled: true
+  paths:
+    - /var/lib/docker/containers/*ssh-target*.log
+  tags: ["ssh"]
+  processors:
+    - add_docker_metadata:
+        host: "unix:///var/run/docker.sock"
+    - add_tags:
+        tags: ["authentication_logs"]
+
+output.logstash:
+  hosts: ["logstash:5044"]
+  ssl.enabled: false
+
+logging.level: debug
