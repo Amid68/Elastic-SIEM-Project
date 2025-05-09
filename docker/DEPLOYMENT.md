@@ -81,30 +81,7 @@ These certificates enable encrypted communication within the Elasticsearch clust
 
    Note: Using the `--no-deps` flag is a workaround for health check issues that may mark Elasticsearch as unhealthy despite it functioning correctly.
 
-## Step 5: Capture Network Traffic (for Network Intrusion Detection)
-
-A script is included to capture network traffic using tcpdump and prepare it for ingestion by Filebeat:
-
-1. Make sure you have the required tools installed:
-   ```bash
-   # For Linux
-   sudo apt install wireshark
-   
-   # For Mac
-   brew install wireshark
-
-   # For Linux
-   sudo apt-get install tshark
-   ```
-
-2. Run the capture script to collect network traffic:
-   ```bash
-   ./capture_traffic.sh
-   ```
-
-3. The script will capture traffic for 60 seconds by default and save it to `docker/network_logs/network_traffic.json` where Filebeat will automatically pick it up.
-
-## Step 6: Access Kibana
+# Step 5: Access Kibana
 
 1. Open a web browser and navigate to:
    ```
@@ -115,7 +92,7 @@ A script is included to capture network traffic using tcpdump and prepare it for
    - Username: `elastic`
    - Password: The value you set for `ELASTIC_PASSWORD` in the `.env` file
 
-## Step 7: Verify Data Collection
+## Step 6: Verify Data Collection
 
 1. In Kibana, navigate to "Management" > "Stack Management" > "Data Views"
 
@@ -127,7 +104,7 @@ A script is included to capture network traffic using tcpdump and prepare it for
 
 ![Index Management](./screenshots/index_management.png)
 
-## Step 8: Stopping the Elastic Stack
+## Step 9: Stopping the Elastic Stack
 
 To stop the Elastic Stack when not in use:
 
