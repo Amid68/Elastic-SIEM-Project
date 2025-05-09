@@ -92,26 +92,26 @@ services:
 
   # SSH Target (for brute-force simulation)
   ssh-target:
-  image: linuxserver/openssh-server
-  container_name: ssh-target
-  environment:
-    - PUID=1000
-    - PGID=1000
-    - TZ=Etc/UTC
-    - USER_NAME=testuser
-    - PASSWORD_ACCESS=true
-    - USER_PASSWORD=testpassword
-    - LOG_STDOUT=true
-  ports:
-    - "2222:2222"
-  networks:
-    elastic-net: {} 
-  platform: linux/arm64
-  labels:
-    co.elastic.logs/module: "system"
-    co.elastic.logs/fileset: "auth"
+    image: linuxserver/openssh-server
+    container_name: ssh-target
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - USER_NAME=testuser
+      - PASSWORD_ACCESS=true
+      - USER_PASSWORD=testpassword
+      - LOG_STDOUT=true
+    ports:
+      - "2222:2222"
+    networks:
+      elastic-net: {} 
+    platform: linux/arm64
+    labels:
+      co.elastic.logs/module: "system"
+      co.elastic.logs/fileset: "auth"
 
-  # Hydra Attacker Container (uncomment when running the simulation)
+  # Hydra Attacker Container
   hydra-attacker:
     image: ubuntu
     container_name: hydra-attacker
