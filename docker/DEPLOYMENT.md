@@ -101,7 +101,7 @@ This critical step ensures that Kibana can successfully connect to Elasticsearch
 
 3. Finally, deploy the Beats components:
    ```bash
-   sudo docker-compose up -d --no-deps filebeat packetbeat
+   sudo docker-compose up -d --no-deps filebeat
    ```
 
 ## Step 6: Verify All Components Are Running
