@@ -25,7 +25,6 @@ sudo git clone https://github.com/Amid68/Elastic-SIEM-Project.git
 
 2. Create the `.env` file with the following content:
    ```bash
-   # Create the .env file
    sudo cat > .env << 'EOL'
    # Environment variables for Elastic Stack SIEM deployment
    # Elasticsearch credentials
