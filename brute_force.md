@@ -118,29 +118,6 @@ Don't forget to shutdown and delete the containers for this scenario before movi
 sudo docker-compose down ssh-target hydra-attacker -v
 ```
 
-## 8. Troubleshooting
-
-If you don't see alerts:
-
-1. Check Logstash logs:
-```bash
-sudo docker logs logstash
-```
-
-2. Check Filebeat logs:
-```bash
-sudo docker logs filebeat
-```
-
-3. Verify logs are getting to Elasticsearch:
-```bash
-sudo curl -u elastic:elastic123 "http://localhost:9200/_search?q=tags:authentication_failure&pretty"
-```
-
-4. Verify your detection rule is enabled:
-   - Go to Security > Rules
-   - Check the status of your "Brute-Force Attack Detection" rule
-
 ## Conclusion
 
 You have successfully set up a brute-force attack simulation environment and configured Elastic SIEM to detect these attacks. This hands-on experience demonstrates how security information and event management (SIEM) systems can identify and alert on potential security threats in real-time.
@@ -152,3 +129,6 @@ The simulation helps security professionals understand:
 - The importance of log collection and processing in security monitoring
 
 This knowledge can be applied to enhance security monitoring in production environments and develop more sophisticated detection and response strategies.
+
+### Start the second scenario
+When you are ready move on to do the second scenario: [Place holder]()
