@@ -37,7 +37,7 @@ Ensure both containers show a status of "Up".
 ## 4. Configure Kibana Detection Rule
 
 1. Log in to Kibana at `http://localhost:5601`
-2. Navigate to **Security** > **Rules** > **Create new rule**
+2. Navigate to **Security** > **Rules** > **Detection rules (SIEM)** > **Create new rule**
 
 ![rules navigation](./screenshots/rules_navigation.png "Navigate to rules")
 
@@ -46,7 +46,7 @@ Ensure both containers show a status of "Up".
 4. Define the rule:
    - **Index patterns**: Include filebeat-* patterns
    - **Custom query**: `tags:authentication_failure OR message:*Failed password* OR message:*authentication failure*`
-   - **Group by field**: `source.ip`
+   - **Group by field**: `host.ip.keyword`
    - **Threshold**: 3
    - **Timeframe**: 5 minutes
 
