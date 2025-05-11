@@ -128,7 +128,7 @@ This critical step ensures that Kibana can successfully connect to Elasticsearch
    ```
    http://localhost:5601
    ```
-
+![login screen](./screenshots/login.png "Login Screen")
 2. Log in with the following credentials:
    - Username: `elastic`
    - Password: `elastic123`
