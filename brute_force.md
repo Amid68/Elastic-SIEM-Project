@@ -43,12 +43,16 @@ Ensure both containers show a status of "Up".
 
 3. Select **Threshold** rule type
 
+![choose threshold](./screenshots/choose_threshold.png "Choose Threshold")
+
 4. Define the rule:
    - **Index patterns**: Include filebeat-* patterns
    - **Custom query**: `tags:authentication_failure OR message:*Failed password* OR message:*authentication failure*`
    - **Group by field**: `host.ip.keyword`
    - **Threshold**: 3
    - **Timeframe**: 5 minutes
+     
+![create rule](./screenshots/create_rule1.png)
 
 5. Configure rule settings:
    - **Rule name**: "Brute-Force Attack Detection"
@@ -58,9 +62,13 @@ Ensure both containers show a status of "Up".
    - **MITRE ATT&CK**: Select "Credential Access" and "Brute Force (T1110)"
    - **False positive examples**: Add "Users who forgot passwords and made multiple attempts"
 
+![create rule](./screenshots/create_rule2.png)
+
 6. Set schedule:
    - **Runs every**: 5m
    - **Additional look-back time**: 1m
+
+![create rule](./screenshots/create_rule3.png)
 
 7. Save and enable the rule
 
@@ -90,6 +98,8 @@ After running the simulation:
 2. In Kibana, navigate to **Security** > **Alerts**
 3. You should see an alert for "Brute-Force Attack Detection"
 
+![alert](./screenshots/alert.png)
+
 ## 7. Analyzing the Alert
 
 The alert shows:
@@ -103,6 +113,8 @@ You can click on the alert to see more details, including:
 - All source and destination IP addresses
 - All authentication attempts (failures and successes)
 - Timestamps for each event
+
+![alert](./screenshots/alert_details.png)
 
 ## 8. Troubleshooting
 
