@@ -17,9 +17,6 @@ All necessary files for this exercise are already included in the repository you
 First, ensure you've deployed the main Elastic Stack components as described in the DEPLOYMENT.md file. Then, start the additional containers needed for this simulation:
 
 ```bash
-# Navigate to the docker directory if you're not already there
-cd docker
-
 # Start the SSH target and Hydra attacker containers
 docker-compose up -d ssh-target hydra-attacker
 ```
@@ -70,9 +67,6 @@ Ensure both containers show a status of "Up".
 The brute-force attack simulation script is already included in the repository. Execute it to simulate the attack:
 
 ```bash
-# Navigate to the docker directory if you're not already there
-cd docker
-
 # Make sure the script is executable
 chmod +x simulation/run-brute-force.sh
 
