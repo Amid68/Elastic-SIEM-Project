@@ -1,35 +1,18 @@
-# Elastic SIEM Project - Deployment
+# Elastic SIEM Project
 
-This repository contains the deployment configuration for an Elastic Stack SIEM (Security Information and Event Management) solution. The deployment is designed for M1 Mac environments with Docker, while maintaining compatibility for Windows team members.
+This repository contains the deployment configuration for an Elastic Stack SIEM (Security Information and Event Management) solution.
 
-## Project Overview
+## Directory Structure
 
-This project focuses on the **deployment** of the Elastic Stack for security monitoring. The deployment includes:
-
-- Elasticsearch (8.12.2)
-- Kibana (8.12.2)
-- Logstash (8.12.2)
-- Filebeat (8.12.2)
-- Packetbeat (8.12.2)
-
-## Repository Structure
-
-- `/docker` - Contains all Docker configuration files and component configurations
-- `/documentation` - Contains detailed documentation about the deployment process
+- `docker-compose.yml`: Main Docker Compose file for deploying the Elastic Stack
+- `elasticsearch/`: Configuration files for Elasticsearch
+- `kibana/`: Configuration files for Kibana
+- `logstash/`: Configuration files for Logstash and pipeline configurations
+- `filebeat/`: Configuration files for Filebeat
+- `.env`: Environment variables for Docker Compose
 - `generate_certs.sh` - Script for generating SSL certificates for secure communications
 
-## Getting Started
+## Deployment Instructions
 
-For detailed deployment instructions, please refer to the [Deployment Guide](docker/DEPLOYMENT.md).
+Detailed step-by-step instructions for deploying the Elastic Stack SIEM solution are provided in the [Deployment Guide](./DEPLOYMENT.md).
 
-For a comprehensive report on the deployment process, including challenges and solutions, see the [Deployment Report](documentation/comprehensive_deployment_report.md).
-
-## Important Notes
-
-- This project is configured for M1 Mac (ARM64) architecture
-- Windows compatibility is maintained through cross-platform configurations
-- A single-node Elasticsearch deployment will show YELLOW status, which is normal
-
-## Troubleshooting
-
-Common deployment issues and their solutions are documented in the Deployment Guide's troubleshooting section.
