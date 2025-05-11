@@ -2,224 +2,47 @@
 
 This guide walks through setting up a brute-force attack simulation environment and configuring Elastic SIEM to detect these attacks. The simulation helps understand how attackers attempt to gain unauthorized access through password guessing and how a SIEM can detect and alert on such activities.
 
-## 1. Repository Structure
+## 1. Overview
 
-Ensure your repository structure includes these essential components:
+All necessary files for this exercise are already included in the repository you've downloaded. The main components we'll be working with are:
 
-```
-.
-├── docker
-│   ├── docker-compose.yml
-│   ├── elasticsearch/
-│   ├── filebeat/
-│   │   ├── filebeat.yml
-│   │   └── filebeat-ssh.yml   # We'll create this
-│   ├── kibana/
-│   ├── logstash/
-│   │   ├── config/
-│   │   └── pipeline/
-│   │       └── beats.conf     # We'll modify this
-│   └── simulation/
-│       └── run-brute-force.sh # We'll create this
-```
+- SSH target container (ssh-target) - The target of our simulated attack
+- Hydra attacker container (hydra-attacker) - Used to perform the brute-force attack
+- Logstash pipeline configuration - Already configured to parse SSH authentication logs
+- Filebeat configuration - Already set up to collect logs from the SSH target
+- Brute-force simulation script - Ready to execute the attack simulation
 
-## 2. Configure SSH Target Container
+## 2. Start the Additional Containers
 
-Add the SSH target container configuration to your `docker-compose.yml` file:
-
-```yaml
-# SSH Target (for brute-force simulation)
-ssh-target:
-  image: linuxserver/openssh-server
-  container_name: ssh-target
-  environment:
-    - PUID=1000
-    - PGID=1000
-    - TZ=Etc/UTC
-    - USER_NAME=testuser
-    - PASSWORD_ACCESS=true
-    - USER_PASSWORD=testpassword
-    - LOG_STDOUT=true  # This ensures SSH logs go to stdout
-  ports:
-    - "2222:2222"
-  networks:
-    - elastic-net
-  platform: linux/arm64  # Change based on your architecture
-  labels:
-    co.elastic.logs/module: "system"
-    co.elastic.logs/fileset: "auth"
-```
-
-Add an attacker container that will run Hydra:
-
-```yaml
-# Hydra Attacker Container
-hydra-attacker:
-  image: ubuntu
-  container_name: hydra-attacker
-  tty: true
-  stdin_open: true
-  command: bash -c "apt-get update && apt-get install -y hydra && sleep infinity"
-  networks:
-    - elastic-net
-  platform: linux/arm64  # Change based on your architecture
-```
-
-## 3. Update Logstash Pipeline Configuration
-
-Modify the `docker/logstash/pipeline/beats.conf` file to recognize and parse SSH authentication logs:
-
-```
-input {
-  beats {
-    port => 5044
-    ssl => false
-  }
-}
-
-filter {
-  if [event][module] == "system" {
-    if [event][dataset] == "auth" {
-      grok {
-        match => { "message" => "%{SYSLOGTIMESTAMP:timestamp} %{SYSLOGHOST:hostname} %{DATA:program}(?:\[%{POSINT:pid}\])?: %{GREEDYDATA:message}" }
-      }
-      
-      # Extract authentication events
-      if [message] =~ "Failed password" {
-        mutate {
-          add_tag => [ "authentication_failure" ]
-        }
-        grok {
-          match => { "message" => "Failed password for %{USERNAME:user} from %{IP:source_ip}" }
-        }
-      }
-      else if [message] =~ "Accepted password" {
-        mutate {
-          add_tag => [ "authentication_success" ]
-        }
-        grok {
-          match => { "message" => "Accepted password for %{USERNAME:user} from %{IP:source_ip}" }
-        }
-      }
-    }
-  }
-  
-  # SSH container-specific parsing
-  if [tags] and [tags] =~ "ssh" {
-    grok {
-      match => { "message" => "%{SYSLOGTIMESTAMP:timestamp} %{GREEDYDATA:ssh_log}" }
-    }
-    
-    if [ssh_log] =~ "Failed password" {
-      mutate {
-        add_tag => [ "authentication_failure" ]
-      }
-      grok {
-        match => { "ssh_log" => "Failed password for %{USERNAME:user} from %{IP:source_ip}" }
-      }
-    }
-    else if [ssh_log] =~ "Accepted password" {
-      mutate {
-        add_tag => [ "authentication_success" ]
-      }
-      grok {
-        match => { "ssh_log" => "Accepted password for %{USERNAME:user} from %{IP:source_ip}" }
-      }
-    }
-  }
-  
-  # Check for Docker container logs with SSH auth messages
-  if [container][name] =~ "ssh-target" or [container][image][name] =~ "openssh-server" {
-    if [message] =~ "Failed password" {
-      mutate {
-        add_tag => [ "authentication_failure" ]
-      }
-      grok {
-        match => { "message" => ".*Failed password for %{USERNAME:user} from %{IP:source_ip}.*" }
-      }
-    }
-    else if [message] =~ "Accepted password" {
-      mutate {
-        add_tag => [ "authentication_success" ]
-      }
-      grok {
-        match => { "message" => ".*Accepted password for %{USERNAME:user} from %{IP:source_ip}.*" }
-      }
-    }
-  }
-  
-  # Add GeoIP information for IP addresses
-  if [source_ip] {
-    geoip {
-      source => "source_ip"
-      target => "source_geo"
-    }
-  }
-}
-
-output {
-  elasticsearch {
-    hosts => ["elasticsearch:9200"]
-    user => "elastic"
-    password => "${ELASTIC_PASSWORD}"
-    index => "%{[@metadata][beat]}-%{[@metadata][version]}-%{+YYYY.MM.dd}"
-    ssl => false
-  }
-}
-```
-
-## 4. Create Brute-Force Simulation Script
-
-Create a file `docker/simulation/run-brute-force.sh` with the following content:
+First, ensure you've deployed the main Elastic Stack components as described in the DEPLOYMENT.md file. Then, start the additional containers needed for this simulation:
 
 ```bash
-#!/bin/bash
+# Navigate to the docker directory if you're not already there
+cd docker
 
-echo "Starting brute-force attack with Hydra..."
-echo "This will generate failed login attempts that should be visible in Elastic SIEM"
-
-# Create password list for the brute-force attack
-docker exec hydra-attacker bash -c "echo 'password123' > /tmp/passwords.txt"
-docker exec hydra-attacker bash -c "echo 'admin' >> /tmp/passwords.txt"
-docker exec hydra-attacker bash -c "echo '123456' >> /tmp/passwords.txt" 
-docker exec hydra-attacker bash -c "echo 'testpassword' >> /tmp/passwords.txt" # The correct password
-
-# Find the IP address of the ssh-target container
-SSH_TARGET_IP=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ssh-target)
-
-echo "Target SSH Server IP: $SSH_TARGET_IP"
-
-# Run Hydra attack with 1 thread (more controlled)
-docker exec hydra-attacker hydra -l testuser -P /tmp/passwords.txt $SSH_TARGET_IP -s 2222 ssh -V -t 1
-
-echo "Attack simulation completed."
-echo "Verifying logs made it to Elasticsearch..."
-
-# Wait 10 seconds for log processing
-sleep 10
-
-# Check logs directly in SSH container
-echo "SSH Container Log Contents:"
-docker exec ssh-target cat /var/log/auth.log || echo "No auth.log found"
-docker logs ssh-target | grep -i password
-
-echo "Check Elastic SIEM for alerts."
+# Start the SSH target and Hydra attacker containers
+docker-compose up -d ssh-target hydra-attacker
 ```
 
-Make the script executable:
+This will start:
+- An SSH server container that will be the target of our attack
+- An attacker container with Hydra installed (a password-cracking tool)
+
+## 3. Verify Components Are Ready
 
 ```bash
-chmod +x docker/simulation/run-brute-force.sh
+# Verify that the containers are running
+docker-compose ps ssh-target hydra-attacker
 ```
 
-## 5. Configure Kibana Detection Rule
+Ensure both containers show a status of "Up".
+
+## 4. Configure Kibana Detection Rule
 
 1. Log in to Kibana at `http://localhost:5601`
 2. Navigate to **Security** > **Rules** > **Create new rule**
 
-3. Select **Threshold** rule type:
-
-![Rule Type Selection](placeholder-rule-type.png)
+3. Select **Threshold** rule type
 
 4. Define the rule:
    - **Index patterns**: Include filebeat-* patterns
@@ -227,8 +50,6 @@ chmod +x docker/simulation/run-brute-force.sh
    - **Group by field**: `source.ip`
    - **Threshold**: 3
    - **Timeframe**: 5 minutes
-
-![Rule Definition](placeholder-rule-definition.png)
 
 5. Configure rule settings:
    - **Rule name**: "Brute-Force Attack Detection"
@@ -238,40 +59,40 @@ chmod +x docker/simulation/run-brute-force.sh
    - **MITRE ATT&CK**: Select "Credential Access" and "Brute Force (T1110)"
    - **False positive examples**: Add "Users who forgot passwords and made multiple attempts"
 
-![Rule Settings](placeholder-rule-settings.png)
-
 6. Set schedule:
    - **Runs every**: 5m
    - **Additional look-back time**: 1m
 
 7. Save and enable the rule
 
-## 6. Deploy and Run Simulation
+## 5. Run the Simulation
 
-1. Start or restart the components:
+The brute-force attack simulation script is already included in the repository. Execute it to simulate the attack:
 
 ```bash
+# Navigate to the docker directory if you're not already there
 cd docker
-docker-compose restart logstash filebeat ssh-target
-```
 
-2. Wait for components to start (around 30 seconds):
+# Make sure the script is executable
+chmod +x simulation/run-brute-force.sh
 
-```bash
-sleep 30
-```
-
-3. Run the brute-force simulation:
-
-```bash
+# Run the simulation
 ./simulation/run-brute-force.sh
 ```
 
-4. Check Kibana for alerts:
-   - Navigate to **Security** > **Alerts**
-   - You should see an alert for "Brute-Force Attack Detection"
+The script will:
+- Create a password list in the hydra-attacker container
+- Find the IP address of the ssh-target container
+- Run a brute-force attack using Hydra with multiple password attempts
+- Check if logs are being generated
 
-![Alert Detection](placeholder-alert-detection.png)
+## 6. Check Kibana for Alerts
+
+After running the simulation:
+
+1. Wait approximately 5-10 minutes for the detection rule to trigger
+2. In Kibana, navigate to **Security** > **Alerts**
+3. You should see an alert for "Brute-Force Attack Detection"
 
 ## 7. Analyzing the Alert
 
@@ -286,8 +107,6 @@ You can click on the alert to see more details, including:
 - All source and destination IP addresses
 - All authentication attempts (failures and successes)
 - Timestamps for each event
-
-![Alert Details](placeholder-alert-details.png)
 
 ## 8. Troubleshooting
 

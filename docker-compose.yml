@@ -29,7 +29,7 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
-    platform: linux/arm64
+    #platform: linux/arm64
 
   # Kibana
   kibana:
@@ -48,7 +48,7 @@ services:
     depends_on:
       elasticsearch:
         condition: service_healthy
-    platform: linux/arm64
+    #platform: linux/arm64
 
   # Logstash
   logstash:
@@ -70,7 +70,7 @@ services:
     depends_on:
       elasticsearch:
         condition: service_healthy
-    platform: linux/arm64
+    #platform: linux/arm64
 
   # Filebeat
   filebeat:
@@ -87,7 +87,7 @@ services:
     depends_on:
       elasticsearch:
         condition: service_healthy
-    platform: linux/arm64
+    #platform: linux/arm64
     command: filebeat -e -strict.perms=false
 
   # SSH Target (for brute-force simulation)
@@ -106,7 +106,7 @@ services:
       - "2222:2222"
     networks:
       elastic-net: {} 
-    platform: linux/arm64
+    #platform: linux/arm64
     labels:
       co.elastic.logs/module: "system"
       co.elastic.logs/fileset: "auth"
@@ -120,7 +120,7 @@ services:
     command: bash -c "apt-get update && apt-get install -y hydra && sleep infinity"
     networks:
       - elastic-net
-    platform: linux/arm64
+    #platform: linux/arm64
 
 networks:
   elastic-net:
