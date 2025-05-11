@@ -14,14 +14,13 @@ This guide provides step-by-step instructions for deploying the Elastic Stack SI
 
 ```bash
 sudo git clone https://github.com/Amid68/Elastic-SIEM-Project.git
-cd Elastic-SIEM-Project
 ```
 
 ## Step 2: Configure Environment Variables
 
-1. Navigate to the docker directory:
+1. Navigate to the project directory:
    ```bash
-   cd docker
+   cd Elastic-SIEM-Project
    ```
 
 2. Create the `.env` file with the following content:
