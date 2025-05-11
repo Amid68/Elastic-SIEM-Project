@@ -17,8 +17,7 @@ All necessary files for this exercise are already included in the repository you
 First, ensure you've deployed the main Elastic Stack components as described in the DEPLOYMENT.md file. Then, start the additional containers needed for this simulation:
 
 ```bash
-# Start the SSH target and Hydra attacker containers
-docker-compose up -d ssh-target hydra-attacker
+sudo docker-compose up -d ssh-target hydra-attacker
 ```
 
 This will start:
@@ -28,8 +27,7 @@ This will start:
 ## 3. Verify Components Are Ready
 
 ```bash
-# Verify that the containers are running
-docker-compose ps ssh-target hydra-attacker
+sudo docker-compose ps ssh-target hydra-attacker
 ```
 
 Ensure both containers show a status of "Up".
@@ -77,11 +75,8 @@ Ensure both containers show a status of "Up".
 The brute-force attack simulation script is already included in the repository. Execute it to simulate the attack:
 
 ```bash
-# Make sure the script is executable
-chmod +x simulation/run-brute-force.sh
-
-# Run the simulation
-./simulation/run-brute-force.sh
+sudo chmod +x simulation/run-brute-force.sh
+sudo ./simulation/run-brute-force.sh
 ```
 
 The script will:
@@ -116,23 +111,30 @@ You can click on the alert to see more details, including:
 
 ![alert](./screenshots/alert_details.png)
 
+### Important!
+Don't forget to shutdown and delete the containers for this scenario before moving on to the next one!
+
+```bash
+sudo docker-compose down ssh-target hydra-attacker -v
+```
+
 ## 8. Troubleshooting
 
 If you don't see alerts:
 
 1. Check Logstash logs:
 ```bash
-docker logs logstash
+sudo docker logs logstash
 ```
 
 2. Check Filebeat logs:
 ```bash
-docker logs filebeat
+sudo docker logs filebeat
 ```
 
 3. Verify logs are getting to Elasticsearch:
 ```bash
-curl -u elastic:elastic123 "http://localhost:9200/_search?q=tags:authentication_failure&pretty"
+sudo curl -u elastic:elastic123 "http://localhost:9200/_search?q=tags:authentication_failure&pretty"
 ```
 
 4. Verify your detection rule is enabled:
