@@ -39,6 +39,8 @@ Ensure both containers show a status of "Up".
 1. Log in to Kibana at `http://localhost:5601`
 2. Navigate to **Security** > **Rules** > **Create new rule**
 
+![rules navigation](./screenshots/rules_navigation.png "Navigate to rules")
+
 3. Select **Threshold** rule type
 
 4. Define the rule:
