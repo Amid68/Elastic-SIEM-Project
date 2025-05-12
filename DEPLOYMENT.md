@@ -4,11 +4,13 @@ This guide provides step-by-step instructions for deploying the Elastic Stack SI
 
 ## Prerequisites
 
-- M1 Mac or Linux distribution with Docker installed
+- Linux distribution with Docker installed
 - At least 4GB of RAM allocated to Docker
 - Git (for cloning the repository)
-- Basic understanding of Docker and containerization
-- Terminal access
+
+```bash
+sudo apt install docker-compose
+```
 
 ## Step 1: Clone the Repository
 
