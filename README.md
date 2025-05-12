@@ -13,7 +13,7 @@ The Elastic Stack (formerly known as the ELK Stack) is a collection of open-sour
 
 ![Elastic Stack Architecture](./images/Elastic-Stack.ppm "")
 
-*Figure 2: Architecture of the Elastic Stack showing data flow between components*
+*Figure 1: Architecture of the Elastic Stack showing data flow between components*
 
 ## Components Used in This Project
 
@@ -69,7 +69,7 @@ The Elastic Stack deployment in this project includes several security features:
 
 ![Security Features](./images/security-alert-page.png)
 
-*Figure 4: Security features implemented in the Elastic Stack SIEM*
+*Figure 2: Security features implemented in the Elastic Stack SIEM*
 
 ## Directory Structure
 
@@ -92,7 +92,7 @@ Once deployed, the Elastic SIEM provides comprehensive security monitoring capab
 
 ![SIEM Dashboard](./images/elastic-security-dashboard.png)
 
-*Figure 5: Elastic SIEM dashboard showing security events and alerts*
+*Figure 3: Elastic SIEM dashboard showing security events and alerts*
 
 ## Detection Rules
 
@@ -100,7 +100,7 @@ The SIEM solution uses detection rules to identify potential security threats an
 
 ![Detection Rules](./images/security-rules.png)
 
-*Figure 6: Configuration of detection rules in Kibana*
+*Figure 4: Configuration of detection rules in Kibana*
 
 ## Security Scenarios
 
