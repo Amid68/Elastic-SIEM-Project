@@ -25,7 +25,7 @@ sudo git clone https://github.com/Amid68/Elastic-SIEM-Project.git
 
 2. Create the `.env` file with the following content:
    ```bash
-   sudo cat > .env << 'EOL'
+   sudo bash -c 'cat > .env << "EOL"
    # Environment variables for Elastic Stack SIEM deployment
    # Elasticsearch credentials
    ELASTIC_PASSWORD=elastic123
@@ -39,7 +39,7 @@ sudo git clone https://github.com/Amid68/Elastic-SIEM-Project.git
    CLUSTER_NAME=elastic-siem-cluster
    # Memory limits
    MEM_LIMIT=1073741824  # 1GB in bytes
-   EOL
+   EOL'
    ```
 
 3. If not on M1 Mac, remove or comment out the platform-specific settings in docker-compose.yml:
