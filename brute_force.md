@@ -54,6 +54,7 @@ Ensure both containers show a status of "Up".
 
 5. Configure rule settings:
    - **Rule name**: "Brute-Force Attack Detection"
+   - **Description**: "Detects if someone is trying to brute-force into system"
    - **Risk score**: 73
    - **Severity**: High
    - **Tags**: "brute-force", "authentication", "credential-access"
