@@ -177,6 +177,10 @@ cython_debug/
 .DS_Store
 .vscode/
 
+# Certificate files
 *.key
 *.csr
 *.srl
+
+# Specific directories
+elasticsearch/certs/
