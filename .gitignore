@@ -176,3 +176,7 @@ cython_debug/
 # VS Code settings
 .DS_Store
 .vscode/
+
+*.key
+*.csr
+*.srl

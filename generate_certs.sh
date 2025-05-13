@@ -1,5 +1,5 @@
-mkdir -p docker/elasticsearch/certs
-cd docker/elasticsearch/certs
+mkdir -p elasticsearch/certs
+cd elasticsearch/certs
 
 # Generate CA
 openssl req -x509 -nodes -newkey rsa:2048 -keyout ca.key -out ca.crt -days 365 -subj "/CN=Elastic-CA"
