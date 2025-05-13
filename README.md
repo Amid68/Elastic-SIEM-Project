@@ -2,6 +2,10 @@
 
 This repository contains the deployment configuration for an Elastic Stack SIEM (Security Information and Event Management) solution, designed to provide comprehensive security monitoring and alerting capabilities.
 
+![Elastic SIEM Project Topology](./images/Elastic-SIEM-project-topology.png)
+
+*Figure 1: Topology of the Elastic SIEM Project*
+
 ## What is the Elastic Stack?
 
 The Elastic Stack (formerly known as the ELK Stack) is a collection of open-source projects that together provide a powerful platform for security analytics:
@@ -11,9 +15,9 @@ The Elastic Stack (formerly known as the ELK Stack) is a collection of open-sour
 - **Kibana**: A visualization tool that provides charts, graphs, and dashboards for data stored in Elasticsearch.
 - **Beats**: Lightweight data shippers that send data from edge machines to Logstash or Elasticsearch.
 
-![Elastic Stack Architecture](./images/Elastic-Stack.ppm "")
+![Elastic Stack Architecture](./images/Elastic-Stack.ppm)
 
-*Figure 1: Architecture of the Elastic Stack showing data flow between components*
+*Figure 2: Architecture of the Elastic Stack showing data flow between components*
 
 ## Components Used in This Project
 
@@ -69,7 +73,7 @@ The Elastic Stack deployment in this project includes several security features:
 
 ![Security Features](./images/security-alert-page.png)
 
-*Figure 2: Security features implemented in the Elastic Stack SIEM*
+*Figure 3: Security features implemented in the Elastic Stack SIEM*
 
 ## Directory Structure
 
@@ -92,7 +96,7 @@ Once deployed, the Elastic SIEM provides comprehensive security monitoring capab
 
 ![SIEM Dashboard](./images/elastic-security-dashboard.png)
 
-*Figure 3: Elastic SIEM dashboard showing security events and alerts*
+*Figure 4: Elastic SIEM dashboard showing security events and alerts*
 
 ## Detection Rules
 
@@ -100,7 +104,7 @@ The SIEM solution uses detection rules to identify potential security threats an
 
 ![Detection Rules](./images/security-rules.png)
 
-*Figure 4: Configuration of detection rules in Kibana*
+*Figure 5: Configuration of detection rules in Kibana*
 
 ## Security Scenarios
 
