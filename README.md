@@ -1,5 +1,9 @@
 # Elastic SIEM Project
 
+- **Ameed Othman (CS)**
+- **Ahmed Muwafi (NIS)**
+- **Motaz Saqqa (NIS)**
+
 This repository contains the deployment configuration for an Elastic Stack SIEM (Security Information and Event Management) solution, designed to provide comprehensive security monitoring and alerting capabilities.
 
 ![Elastic SIEM Project Topology](./images/Elastic-SIEM-project-topology.png)
