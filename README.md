@@ -4,7 +4,7 @@ This repository contains the deployment configuration for an Elastic Stack SIEM 
 
 ![Elastic SIEM Project Topology](./images/Elastic-SIEM-project-topology.png)
 
-*Figure 1: Toplogy of the Elastic SIEM Project*
+*Figure 1: Topology of the Elastic SIEM Project*
 
 ## What is the Elastic Stack?
 
