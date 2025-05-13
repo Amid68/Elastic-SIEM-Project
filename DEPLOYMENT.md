@@ -49,8 +49,23 @@ sudo git clone https://github.com/Amid68/Elastic-SIEM-Project.git
    # Open docker-compose.yml and comment out or remove lines containing:
    # platform: linux/arm64
    ```
+## Step 3: Generate SSL Certificates
+SSL certificates are required for secure communication between Elastic Stack components:
 
-## Step 3: Deploy the Elastic Stack
+Run the certificate generation script:
+```bash
+chmod +x generate_certs.sh
+./generate_certs.sh
+```
+This script will:
+- Create the necessary directories
+- Generate a Certificate Authority (CA) certificate
+- Generate a certificate for Elasticsearch
+- The certificates will be stored in docker/elasticsearch/certs/
+
+### IMPORTANT SECURITY NOTE: Never commit these certificates to version control. They contain sensitive private keys that should be kept secure.
+
+## Step 4: Deploy the Elastic Stack
 
 1. Start the Elasticsearch container:
    ```bash
@@ -64,7 +79,7 @@ sudo git clone https://github.com/Amid68/Elastic-SIEM-Project.git
    
    Wait until you see logs indicating that the service is running properly. Note that a YELLOW status is normal for a single-node cluster.
 
-## Step 4: Set Up Authentication
+## Step 5: Set Up Authentication
 
 This critical step ensures that Kibana can successfully connect to Elasticsearch:
 
@@ -85,7 +100,7 @@ This critical step ensures that Kibana can successfully connect to Elasticsearch
    exit
    ```
 
-## Step 5: Deploy Remaining Components
+## Step 6: Deploy Remaining Components
 
 1. Deploy Kibana:
    ```bash
@@ -104,7 +119,7 @@ This critical step ensures that Kibana can successfully connect to Elasticsearch
    sudo docker-compose up -d --no-deps filebeat
    ```
 
-## Step 6: Verify All Components Are Running
+## Step 7: Verify All Components Are Running
 
 1. Check the status of all containers:
    ```bash
@@ -124,7 +139,7 @@ This critical step ensures that Kibana can successfully connect to Elasticsearch
    # If that fails, double-check your authentication setup from Step 4
    ```
 
-## Step 7: Access Kibana
+## Step 8: Access Kibana
 
 1. Open a web browser and navigate to:
    ```
