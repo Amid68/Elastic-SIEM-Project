@@ -54,8 +54,8 @@ SSL certificates are required for secure communication between Elastic Stack com
 
 Run the certificate generation script:
 ```bash
-sudo chmod +x generate_certs.sh
-sudo ./generate_certs.sh
+chmod +x generate_certs.sh
+./generate_certs.sh
 ```
 This script will:
 - Create the necessary directories
