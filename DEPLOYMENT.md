@@ -54,8 +54,8 @@ SSL certificates are required for secure communication between Elastic Stack com
 
 Run the certificate generation script:
 ```bash
-chmod +x generate_certs.sh
-./generate_certs.sh
+sudo chmod +x generate_certs.sh
+sudo ./generate_certs.sh
 ```
 This script will:
 - Create the necessary directories
@@ -63,6 +63,16 @@ This script will:
 - Generate a certificate for Elasticsearch
 - The certificates will be stored in docker/elasticsearch/certs/
 
+After generating the certificates, set the proper permissions:
+```bash
+# Change ownership of the certs directory to match the Elasticsearch user
+# Elasticsearch typically runs as uid 1000
+sudo chown -R 1000:1000 elasticsearch/certs/
+
+# Make sure the key files are readable
+sudo chmod 644 elasticsearch/certs/*.crt
+sudo chmod 600 elasticsearch/certs/*.key
+```
 ### IMPORTANT SECURITY NOTE: Never commit these certificates to version control. They contain sensitive private keys that should be kept secure.
 
 ## Step 4: Deploy the Elastic Stack
