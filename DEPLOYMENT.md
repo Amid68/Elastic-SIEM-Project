@@ -8,6 +8,8 @@ This guide provides step-by-step instructions for deploying the Elastic Stack SI
 - At least 4GB of RAM allocated to Docker
 - Git (for cloning the repository)
 
+[Download Docker Desktop](https://www.docker.com/products/docker-desktop/)
+
 ```bash
 sudo apt install docker-compose
 ```
